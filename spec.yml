@@ -7,6 +7,100 @@ servers:
     descroption: Production Server
 
 paths:
+  /contacts/orgs/{keyword}:
+    get:
+      description: 연락처가 있는 학내 기관 목록 조회. 키워드 없는 경우 모든 기관 목록 조회.
+      parameters:
+        - in: path
+          name: keyword
+          required: false
+          schema:
+            type: string
+          description: 학내 기관 검색 키워드(선택)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orgs:
+                    type: array
+                    example:
+                      - 교무처
+                      - 입학홍보처
+                      - 기획처
+                      - ...
+                    items:
+                      type: string
+  /contacts/find:
+    get:
+      description: 학내기관 연락처 검색
+      parameters:
+        - in: query
+          name: org
+          required: false
+          description: 검색 키워드 - 기관/조직 이름
+          schema:
+            type: string
+          example: 교무처
+        - in: query
+          name: name
+          required: false
+          description: 검색 키워드 - 이름
+          schema:
+            type: string
+          example: 홍길동
+        - in: query
+          name: phone
+          required: false
+          description: 검색 키워드 - 전화번호
+          schema:
+            type: string
+          example: 2610-4114
+        - in: query
+          name: email
+          required: false
+          description: 검색 키워드 - 이메일 주소
+          schema:
+            type: string
+          example: hello@example.com
+        - in: query
+          name: desc 
+          required: false
+          description: 그 외 정보 검색 키워드
+          schema:
+            type: string
+          example: 교원인사
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        org:
+                          type: string
+                          description: 소속 기관/조직
+                        name:
+                          type: string
+                          description: 이름
+                        phone:
+                          type: string
+                          description: 전화번호
+                        email:
+                          type: string
+                          description: 이메일 주소
+                        desc:
+                          type: string
+                          description: 그 외 정보 
+
   /meals/ids:
     get:
       summary: 학식 게시물 ID 목록 조회 
@@ -137,4 +231,6 @@ paths:
                           type: string
                           description: 일정
                           example: 2020-2 복학신청기간
+
+
                        
